@@ -29,5 +29,11 @@ namespace APIDemo.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost("GetDataById/{id}")]
+        public string GetById(int id)
+        {
+            return Summaries[id];
+        }
     }
 }
