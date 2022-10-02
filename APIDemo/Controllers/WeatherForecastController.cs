@@ -6,10 +6,10 @@ namespace APIDemo.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private static List<string> Summaries = new List<string>()
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
@@ -25,15 +25,22 @@ namespace APIDemo.Controllers
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                Summary = Summaries[Random.Shared.Next(Summaries.Count)]
             })
             .ToArray();
         }
 
-        [HttpPost("GetDataById/{id}")]
+        [HttpGet("GetDataById/{id}")]
         public string GetById(int id)
         {
             return Summaries[id];
+        }
+
+        [HttpPost("PutDataToList")]
+        public ActionResult<IEnumerable<string>> PutData(string data)
+        {
+            Summaries.Add(data);
+            return Ok(Summaries);
         }
     }
 }
